@@ -91,14 +91,14 @@ function turn(num) -- turns bot either left (-1) or right (+1) depending on inpu
   end
 end
 
-function trashlist() -- generates white or black list depending on user input and stores block IDs in a table for reference | has some forge tags functionality for cobble and stone
+function trashlist() -- generates white or black list depending on user input and stores block Ds in a table for reference | has some forge tags functionality for cobble and stone
   for i = 1, 15 do
     if turtle.getItemCount(i) > 0 then
       trashtable[i] = turtle.getItemDetail(i).name
-      if trashtable[i] == "minecraft:cobblestone" then
+      if trashtable[i] == "minecraft:cobblestone" or "minecraft:cobbled_deepslate" then
         cobble = true
       end
-      if trashtable[i] == "minecraft:stone" then
+      if trashtable[i] == "minecraft:stone" or "minecraft:deepslate" then
         stone = true
       end
     else
