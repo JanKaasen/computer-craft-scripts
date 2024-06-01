@@ -22,9 +22,9 @@ print("Do you want to dig the whole chunk, y/n?")
 local dummy = io.read()
 if dummy == "n" or dummy == "N" or dummy == "no" or dummy == "No" then
   print("Layers to dig?")
-  Fin = tonumber(io.read())
+  fin = tonumber(io.read())
 else
-  Fin = z0
+  fin = -50
 end
 
 -- set up variables
@@ -91,7 +91,7 @@ function turn(num) -- turns bot either left (-1) or right (+1) depending on inpu
   end
 end
 
-function trashlist() -- generates white or black list depending on user input and stores block Ds in a table for reference | has some forge tags functionality for cobble and stone
+function trashlist() -- generates white or black list depending on user input and stores block IDs in a table for reference | has some forge tags functionality for cobble and stone
   for i = 1, 15 do
     if turtle.getItemCount(i) > 0 then
       trashtable[i] = turtle.getItemDetail(i).name
@@ -169,7 +169,7 @@ function goHome(state) -- returns bot to starting location and handles different
   while state == "fuel" do
     sleep(10)
     refuel()
-    if turtle.getFuelLevel() >= 500 then state = "full" end -- set state to full instead of mine to dispense before returning
+    if turtle.getFuelLevel() >= 500 then state = "full" end     -- set state to full instead of mine to dispense before returning
   end
   if state == "full" then
     dispense()
@@ -251,7 +251,8 @@ end
 
 function trashRemoval() -- removes internal items that either match against the blacklist or dont match against the whitelist (necessary becuase the bot has to mine unwanted blocks to move underground)
   for i = 1, 15 do
-    if (arr[i + 1] == nil) then
+    if (arr[i + 1] == nil) then arr[i + 1] = 0 end
+    if (arr[i + 1] == 1 and turtle.getItemDetail(i) ~= nil) then
       local dispose = true
       for j = 1, slot - 1 do
         if turtle.getItemCount(i) > 0 then
@@ -325,8 +326,8 @@ function mine() -- checks for sufficient fuel every 16 operations then mines the
   end
 end
 
-function Bore() -- moves turtle to z = z0-3 (in case of uneven bedrock)
-  while z < z0 - 3 do
+function Bore() -- moves turtle to Y = -50
+  while z < (z0 + 50) do
     while not turtle.down() do turtle.digDown() end
     z = z + 1
   end
@@ -383,8 +384,8 @@ function diggydiggyhole() -- runs the other functions in the proper order to min
   end
   print(z)
   Bore()
-  print(Fin)
-  for i = 0, Fin - 3 do
+  print(fin)
+  for i = 0, (z0 - fin) do
     print(i)
     if i % 3 == 0 then
       turtle.digUp()
@@ -394,7 +395,7 @@ function diggydiggyhole() -- runs the other functions in the proper order to min
       end
       trashRemoval()
     end
-    if i < Fin - 3 then
+    if i < (z0 - fin) then
       while not turtle.up() do turtle.digUp() end
       z = z - 1
     end
