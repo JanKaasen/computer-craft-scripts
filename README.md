@@ -6,7 +6,7 @@ The list will be updated with scipts as they are written
 ## List of scripts
 
 Quarry script
-Bores down to Y= -50 then mines out a quarry from the bottom.
+Bores down to Y= -58 then mines out a quarry from the bottom.
 
 ### To install
 Write 
