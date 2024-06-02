@@ -9,6 +9,11 @@ Quarry script
 Bores down to Y= -58 then mines out a quarry from the bottom.
 
 ### To install
-Write 
-`pastebin get ZG0AQRzr quarry` 
-in the turtle console
+Copy 
+```
+pastebin get MabBEwq1 quarry
+```
+into the mining turtle console
+
+#### How to run
+Write quarry in the turtle to run the program
