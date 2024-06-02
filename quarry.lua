@@ -24,7 +24,7 @@ if dummy == "n" or dummy == "N" or dummy == "no" or dummy == "No" then
   print("Layers to dig?")
   fin = tonumber(io.read())
 else
-  fin = -50
+  fin = -58
 end
 
 -- set up variables
@@ -95,10 +95,10 @@ function trashlist() -- generates white or black list depending on user input an
   for i = 1, 15 do
     if turtle.getItemCount(i) > 0 then
       trashtable[i] = turtle.getItemDetail(i).name
-      if trashtable[i] == "minecraft:cobblestone" or "minecraft:cobbled_deepslate" then
+      if trashtable[i] == "minecraft:cobblestone" or trashtable[i] == "minecraft:cobbled_deepslate" then
         cobble = true
       end
-      if trashtable[i] == "minecraft:stone" or "minecraft:deepslate" then
+      if trashtable[i] == "minecraft:stone" or trashtable[i] == "minecraft:deepslate" then
         stone = true
       end
     else
@@ -169,7 +169,7 @@ function goHome(state) -- returns bot to starting location and handles different
   while state == "fuel" do
     sleep(10)
     refuel()
-    if turtle.getFuelLevel() >= 500 then state = "full" end     -- set state to full instead of mine to dispense before returning
+    if turtle.getFuelLevel() >= 500 then state = "full" end -- set state to full instead of mine to dispense before returning
   end
   if state == "full" then
     dispense()
@@ -262,7 +262,7 @@ function trashRemoval() -- removes internal items that either match against the 
               turtle.drop()
             elseif cobble or stone then
               dat = turtle.getItemDetail(i, true)
-              if cobble and dat.tags["forge:cobblestone"] or stone and dat.tags["forge:stone"] then
+              if cobble and (dat.name == "minecraft:cobblestone" or dat.name == "cobbled_deepslate") or stone and (dat.name == "minecraft:stone" or dat.name == "minecraft:deepslate") then
                 turtle.select(i)
                 turtle.drop()
               end
@@ -326,8 +326,8 @@ function mine() -- checks for sufficient fuel every 16 operations then mines the
   end
 end
 
-function Bore() -- moves turtle to Y = -50
-  while z < (z0 + 50) do
+function Bore() -- moves turtle to Y = -58
+  while z < (z0 + 58) do
     while not turtle.down() do turtle.digDown() end
     z = z + 1
   end
