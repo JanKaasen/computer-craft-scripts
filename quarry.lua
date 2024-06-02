@@ -386,7 +386,12 @@ function diggydiggyhole() -- runs the other functions in the proper order to min
   Bore()
   print(fin)
   for i = 0, (z0 - fin) do
-    print(i)
+    print("Starting layer " .. i)
+    trashRemoval()
+    refuel()
+    if isFull() then
+      goHome("full")
+    end
     if i % 3 == 0 then
       turtle.digUp()
       quarry()
