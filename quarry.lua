@@ -7,12 +7,12 @@ local w = tonumber(io.read())
 print("Turtle Y: ")
 local z0 = tonumber(io.read())
 local listtype = 12
-while (listtype ~= 1 and listtype ~= 0) do
+while listtype ~= 1 and listtype ~= 0 do
   print("Whitelist y/n?")
   listtype = io.read()
-  if (listtype == "yes" or listtype == "Yes" or listtype == "y" or listtype == "Y") then
+  if listtype == "yes" or listtype == "Yes" or listtype == "y" or listtype == "Y" then
     listtype = 1
-  elseif (listtype == "no" or listtype == "No" or listtype == "n" or listtype == "N") then
+  elseif listtype == "no" or listtype == "No" or listtype == "n" or listtype == "N" then
     listtype = 0
   else
     print("Invalid answer, please type either yes or no")
@@ -65,7 +65,9 @@ function refuel() -- checks if bot needs fuel, and if it does uses internal item
           end
         end
       end
-      if f then break end
+      if f then
+        break
+      end
     end
   end
 end
@@ -75,10 +77,18 @@ function moveForward() -- moves bot forward 1 block and updates position
   while not turtle.forward() do
     turtle.dig()
   end
-  if face == 0 then y = y + 1 end
-  if face == 1 then x = x + 1 end
-  if face == 2 then y = y - 1 end
-  if face == 3 then x = x - 1 end
+  if face == 0 then
+    y = y + 1
+  end
+  if face == 1 then
+    x = x + 1
+  end
+  if face == 2 then
+    y = y - 1
+  end
+  if face == 3 then
+    x = x - 1
+  end
 end
 
 function turn(num) -- turns bot either left (-1) or right (+1) depending on input and updates face value
@@ -108,7 +118,9 @@ function trashlist() -- generates white or black list depending on user input an
   end
   print("Item data saved")
 
-  while face ~= 2 do turn(1) end
+  while face ~= 2 do
+    turn(1)
+  end
   for i = 1, slot - 1 do
     turtle.select(i)
     turtle.drop()
@@ -141,25 +153,45 @@ function goHome(state) -- returns bot to starting location and handles different
   zp = z
   facep = face
   while y > 0 do
-    if face == 0 then turn(1) end
-    if face == 1 then turn(1) end
-    if face == 2 then moveForward() end
-    if face == 3 then turn(-1) end
+    if face == 0 then
+      turn(1)
+    end
+    if face == 1 then
+      turn(1)
+    end
+    if face == 2 then
+      moveForward()
+    end
+    if face == 3 then
+      turn(-1)
+    end
   end
   while x > 0 do
-    if face == 0 then turn(-1) end
-    if face == 1 then turn(-1) end
-    if face == 2 then turn(1) end
-    if face == 3 then moveForward() end
+    if face == 0 then
+      turn(-1)
+    end
+    if face == 1 then
+      turn(-1)
+    end
+    if face == 2 then
+      turn(1)
+    end
+    if face == 3 then
+      moveForward()
+    end
   end
 
-  if (state == "full" or state == "fuel") then trashRemoval() end
+  if state == "full" or state == "fuel" then
+    trashRemoval()
+  end
 
   while z > 0 do
     turtle.up()
     z = z - 1
   end
-  while (face ~= 2) do turn(-1) end
+  while face ~= 2 do
+    turn(-1)
+  end
   suc2, dat2 = turtle.inspect()
   if not suc2 then
     turn(-1)
@@ -169,7 +201,9 @@ function goHome(state) -- returns bot to starting location and handles different
   while state == "fuel" do
     sleep(10)
     refuel()
-    if turtle.getFuelLevel() >= 500 then state = "full" end -- set state to full instead of mine to dispense before returning
+    if turtle.getFuelLevel() >= 500 then
+      state = "full"
+    end -- set state to full instead of mine to dispense before returning
   end
   if state == "full" then
     dispense()
@@ -178,7 +212,9 @@ function goHome(state) -- returns bot to starting location and handles different
   end
   if state == "comp" then
     dispense()
-    while face ~= 0 do turn(1) end
+    while face ~= 0 do
+      turn(1)
+    end
     error()
   end
   if state == "mine" then
@@ -187,16 +223,32 @@ function goHome(state) -- returns bot to starting location and handles different
       z = z + 1
     end
     while x < xp do
-      if face == 0 then turn(1) end
-      if face == 1 then moveForward() end
-      if face == 2 then turn(-1) end
-      if face == 3 then turn(-1) end
+      if face == 0 then
+        turn(1)
+      end
+      if face == 1 then
+        moveForward()
+      end
+      if face == 2 then
+        turn(-1)
+      end
+      if face == 3 then
+        turn(-1)
+      end
     end
     while y < yp do
-      if face == 0 then moveForward() end
-      if face == 1 then turn(-1) end
-      if face == 2 then turn(1) end
-      if face == 3 then turn(1) end
+      if face == 0 then
+        moveForward()
+      end
+      if face == 1 then
+        turn(-1)
+      end
+      if face == 2 then
+        turn(1)
+      end
+      if face == 3 then
+        turn(1)
+      end
     end
     while face ~= facep do
       turn(1)
@@ -208,7 +260,7 @@ function compare(dir) -- checks block depending on (dir) against the list genera
   local suc = true
   local dat = nil
   local tf = true
-  if (listtype == 1) then
+  if listtype == 1 then
     tf = false
   end
   if dir == "up" then
@@ -230,7 +282,7 @@ function compare(dir) -- checks block depending on (dir) against the list genera
       end
     end
   end
-  return not (tf)
+  return not tf
 end
 
 function digUp() -- mines block above bot if the bot is supposed to (it is on the whitelist or is not on the blacklist)
@@ -251,8 +303,10 @@ end
 
 function trashRemoval() -- removes internal items that either match against the blacklist or dont match against the whitelist (necessary becuase the bot has to mine unwanted blocks to move underground)
   for i = 1, 15 do
-    if (arr[i + 1] == nil) then arr[i + 1] = 0 end
-    if (arr[i + 1] == 1 and turtle.getItemDetail(i) ~= nil) then
+    if arr[i + 1] == nil then
+      arr[i + 1] = 0
+    end
+    if arr[i + 1] == 1 and turtle.getItemDetail(i) ~= nil then
       local dispose = true
       for j = 1, slot - 1 do
         if turtle.getItemCount(i) > 0 then
@@ -262,7 +316,10 @@ function trashRemoval() -- removes internal items that either match against the 
               turtle.drop()
             elseif cobble or stone then
               dat = turtle.getItemDetail(i, true)
-              if cobble and (dat.name == "minecraft:cobblestone" or dat.name == "cobbled_deepslate") or stone and (dat.name == "minecraft:stone" or dat.name == "minecraft:deepslate") then
+              if
+                cobble and (dat.name == "minecraft:cobblestone" or dat.name == "cobbled_deepslate")
+                or stone and (dat.name == "minecraft:stone" or dat.name == "minecraft:deepslate")
+              then
                 turtle.select(i)
                 turtle.drop()
               end
@@ -270,7 +327,7 @@ function trashRemoval() -- removes internal items that either match against the 
           else
             if turtle.getItemDetail(i).name == trashtable[j] then
               dispose = false
-            elseif (turtle.getItemDetail(i).name == turtle.getItemDetail(16).name) then
+            elseif turtle.getItemDetail(i).name == turtle.getItemDetail(16).name then
               turtle.select(i)
               turtle.transferTo(16)
               dispose = false
@@ -278,11 +335,11 @@ function trashRemoval() -- removes internal items that either match against the 
           end
         end
       end
-      if (listtype == 1 and dispose) then
+      if listtype == 1 and dispose then
         turtle.select(i)
         turtle.drop()
       end
-      if (turtle.getItemCount(i) > 0) then
+      if turtle.getItemCount(i) > 0 then
         arr[i + 1] = 1
         arr[1] = arr[1] + 1
       end
@@ -322,13 +379,17 @@ function mine() -- checks for sufficient fuel every 16 operations then mines the
   digUp()
   if isFull() then
     trashRemoval()
-    if arr[1] >= 14 then goHome("full") end
+    if arr[1] >= 14 then
+      goHome("full")
+    end
   end
 end
 
 function Bore() -- moves turtle to Y = -58
   while z < (z0 + 58) do
-    while not turtle.down() do turtle.digDown() end
+    while not turtle.down() do
+      turtle.digDown()
+    end
     z = z + 1
   end
 end
@@ -361,8 +422,8 @@ function quarry() -- uses moveY to mine out a square
   refuel()
   for i = 0, w - 1 do
     moveY()
-    if (i < w - 1) then
-      if (i % 2 == 0) then
+    if i < w - 1 then
+      if i % 2 == 0 then
         turn(rev)
       else
         turn(-rev)
@@ -395,13 +456,15 @@ function diggydiggyhole() -- runs the other functions in the proper order to min
     if i % 3 == 0 then
       turtle.digUp()
       quarry()
-      if (w % 2 == 0) then
+      if w % 2 == 0 then
         rev = 0 - rev
       end
       trashRemoval()
     end
     if i < (z0 - fin) then
-      while not turtle.up() do turtle.digUp() end
+      while not turtle.up() do
+        turtle.digUp()
+      end
       z = z - 1
     end
   end
