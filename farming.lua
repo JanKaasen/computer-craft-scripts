@@ -22,8 +22,8 @@ function CheckGrowth()
   local success, cropData = turtle.inspectDown()
   if success and cropData.state.age == 7 then
     turtle.digDown()
-  elseif not success then
-    turtle.forward()
+  else
+    return
   end
 end
 
@@ -81,7 +81,27 @@ function FarmField()
 end
 
 function ReturnHome()
-  print(X, Y)
+  turtle.turnLeft()
+  for i = 1, 8 do
+    turtle.forward()
+  end
+  turtle.turnLeft()
+  for i = 1, 8 do
+    turtle.forward()
+  end
+end
+
+function DropOff()
+  for i = 1, 16 do
+    turtle.select(i)
+    turtle.drop()
+  end
+end
+
+function TurnAround()
+  for i = 1, 2 do
+    turtle.turnLeft()
+  end
 end
 
 function HonestWork()
@@ -90,6 +110,8 @@ function HonestWork()
   PlantSeed()
   FarmField()
   ReturnHome()
+  DropOff()
+  TurnAround()
 end
 
 HonestWork()
